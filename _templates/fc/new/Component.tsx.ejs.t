@@ -1,7 +1,7 @@
 ---
 to: <%= path %>/<%= name %>.tsx
 ---
-import style from './<%= name %>.module.css'
+import style from './<%= name %>.module.css';
 
 <% if (have_props) { -%>
 interface Props = {};
