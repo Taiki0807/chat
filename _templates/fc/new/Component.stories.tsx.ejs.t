@@ -2,12 +2,12 @@
 to: <%= path %>/<%= name %>.stories.tsx
 unless_exists: true
 ---
-import React from "react";
-import { Story, Meta } from "@storybook/react";
-import { <%= name %> } from "<%= path %>/<%= name %>";
+import React from 'react';
+import { Story, Meta } from '@storybook/react';
+import { <%= name %> } from './<%= name %>';
 
 export default {
-  title: "<%= name %>",
+  title: '<%= name %>',
   component: <%= name %>,
   <% if (have_props) { -%>
   args: {},
