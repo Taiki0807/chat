@@ -4,7 +4,7 @@ to: <%= path %>/<%= name %>.tsx
 import style from './<%= name %>.module.css';
 
 <% if (have_props) { -%>
-interface Props = {};
+interface Props {};
 <% } -%>
 
 export const <%= name%> = <%= props %> => {
