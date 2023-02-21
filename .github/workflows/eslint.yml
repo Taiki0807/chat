@@ -32,7 +32,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: npm ci
-        run: npm ci
+        run: npm install && npm ci
       - name: reviewdog ESLint
         uses: reviewdog/action-eslint@v1
         with:
