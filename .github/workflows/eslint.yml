@@ -35,7 +35,6 @@ jobs:
         run: npm install && npm ci
       - name: reviewdog ESLint
         uses: reviewdog/action-setup@v1
-      - name: Run reviewdog
         with:
           reviewdog_version: latest
         env:
