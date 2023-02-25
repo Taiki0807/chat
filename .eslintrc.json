@@ -7,6 +7,19 @@
     "plugin:import/warnings",
     "prettier"
   ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -16,6 +29,11 @@
     }
   },
   "plugins": ["@typescript-eslint", "react"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "react/react-in-jsx-scope": "off",
     "import/order": [
@@ -27,5 +45,9 @@
       }
     ],
     "react/prop-types": "off"
+  },
+  "globals": {
+    "JSX": "readonly",
+    "React": "writable"
   }
 }
