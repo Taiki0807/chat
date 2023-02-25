@@ -34,6 +34,8 @@ npm run fc:new
 npm run format
 # コードを修正
 npm run lint:fix
+# 型チェック
+npm run type-check
 ```
 
 ## コミットメッセージ
