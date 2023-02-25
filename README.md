@@ -52,4 +52,8 @@ npm run type-check
 - features - API 通信や状態がある、ロジックがある、再利用性があるコンポーネント
 - parts - 状態を持たない、再利用性があるコンポーネント
 
+### types
+
+型定義ファイルを配置
+
 ディレクトリ構造はこの [GitHub レポジトリ](https://github.com/fumi-sagawa/next-simple-template/blob/main/docs/directory-structure.md)を参考
