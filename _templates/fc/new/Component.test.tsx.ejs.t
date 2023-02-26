@@ -5,6 +5,7 @@ unless_exists: true
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './<%= name %>.stories';
+import '@testing-library/jest-dom';
 
 const { Default } = composeStories(stories)
 

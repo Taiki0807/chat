@@ -1,4 +1,4 @@
-# Next.js Template
+# チャット
 
 ## 導入ライブラリー
 
@@ -34,6 +34,8 @@ npm run fc:new
 npm run format
 # コードを修正
 npm run lint:fix
+# 型チェック
+npm run type-check
 ```
 
 ## コミットメッセージ
@@ -49,5 +51,9 @@ npm run lint:fix
 - pages - レイアウトを行うディレクトリ
 - features - API 通信や状態がある、ロジックがある、再利用性があるコンポーネント
 - parts - 状態を持たない、再利用性があるコンポーネント
+
+### types
+
+型定義ファイルを配置
 
 ディレクトリ構造はこの [GitHub レポジトリ](https://github.com/fumi-sagawa/next-simple-template/blob/main/docs/directory-structure.md)を参考
