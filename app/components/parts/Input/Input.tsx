@@ -4,6 +4,7 @@ interface Props {
   type?: 'text' | 'password';
   children: React.ReactNode;
   name: string;
+  testid: string;
 }
 
 export const Input = (props: Props): JSX.Element => {
@@ -12,6 +13,7 @@ export const Input = (props: Props): JSX.Element => {
       <input
         type={props.type}
         name={props.name}
+        data-testid={props.testid}
         required
       ></input>
       <span></span>

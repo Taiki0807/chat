@@ -10,10 +10,18 @@ export const LoginForm = (): JSX.Element => {
     <div className={style.center}>
       <h1>Login</h1>
       <form onSubmit={loginUser}>
-        <Input type={'text'} name={'username'}>
+        <Input
+          type={'text'}
+          name={'username'}
+          testid={'username'}
+        >
           Username
         </Input>
-        <Input type={'password'} name={'password'}>
+        <Input
+          type={'password'}
+          name={'password'}
+          testid={'password'}
+        >
           password
         </Input>
         <Button color={'blue'}>Login</Button>
