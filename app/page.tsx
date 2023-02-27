@@ -1,9 +1,9 @@
-import { Button } from './components/parts';
+import { LoginForm } from './components/features';
+
 export default function Home() {
   return (
     <div>
-      <div>hello world</div>
-      <Button>test</Button>
+      <LoginForm />
     </div>
   );
 }
