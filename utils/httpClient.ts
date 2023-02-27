@@ -6,6 +6,7 @@ export const getFetcher = <T>(
     process.env.NEXT_PUBLIC_API_BASE_URL + path,
     {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...headers,
@@ -23,6 +24,7 @@ export const postFetcher = <T>(
     process.env.NEXT_PUBLIC_API_BASE_URL + path,
     {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...headers,
