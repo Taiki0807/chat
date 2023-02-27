@@ -11,6 +11,13 @@ type Story = ComponentStoryObj<T>;
 export default {
   title: 'Button',
   component: Button,
+  decorators: [
+    (Story) => (
+      <div style={{ width: '300px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 } as Meta;
 
 export const Default: Story = {
