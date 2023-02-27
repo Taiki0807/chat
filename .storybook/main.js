@@ -1,3 +1,4 @@
+var path = require('path');
 module.exports = {
   stories: [
     '../app/**/*.stories.mdx',
@@ -11,5 +12,17 @@ module.exports = {
   framework: '@storybook/react',
   core: {
     builder: '@storybook/builder-webpack5',
+  },
+  webpackFinal: (config) => {
+    return {
+      ...config,
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve.alias,
+          '@': path.resolve(__dirname, '../'),
+        },
+      },
+    };
   },
 };
