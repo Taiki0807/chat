@@ -25,3 +25,9 @@ export const Primary: Story = {
     children: 'Primary',
   },
 };
+export const Blue: Story = {
+  args: {
+    color: 'blue',
+    children: 'Blue',
+  },
+};

@@ -1,7 +1,7 @@
 import style from './Button.module.css';
 
 interface Props {
-  color?: 'danger' | 'primary';
+  color?: 'danger' | 'primary' | 'blue';
   children: React.ReactNode;
   onClick?: () => void;
 }
