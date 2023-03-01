@@ -1,4 +1,5 @@
 ---
+inject: true
 to: <%= dir %>/index.ts
 append: true
 ---
