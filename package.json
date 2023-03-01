@@ -15,7 +15,8 @@
     "fc:new": "hygen fc new",
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"./**/**/*.{ts,tsx}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "dev:proxy": "next dev & npx local-ssl-proxy --key localhost-key.pem --cert localhost.pem --source 3001 --target 3000"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -44,6 +45,7 @@
     "@storybook/testing-react": "^1.3.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "@types/js-cookie": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "babel-loader": "^8.3.0",
