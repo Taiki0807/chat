@@ -36,6 +36,10 @@ export const postFetcher = <T>(
 
 const HandleErrors = (res: any) => {
   if (res.ok) {
+    const contentLength = res.headers.get('content-length');
+    if (contentLength === '0') {
+      return null;
+    }
     return res.json();
   }
 
