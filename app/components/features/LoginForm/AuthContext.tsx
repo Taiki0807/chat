@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter, usePathname } from 'next/navigation';
 import {
   createContext,
   useContext,
@@ -7,6 +8,7 @@ import {
   SetStateAction,
   useState,
   ReactNode,
+  useEffect,
 } from 'react';
 import {
   getFetcher,
@@ -22,9 +24,14 @@ export interface AuthContextProps {
 export interface AuthProps {
   children: ReactNode;
 }
-
 interface Author {
   username: string;
+}
+interface Status {
+  status: number;
+}
+interface Refresh {
+  refresh: string;
 }
 
 const AuthContext = createContext<
@@ -37,6 +44,11 @@ export const useAuthContext = () => {
 
 export const AuthProvider = ({ children }: AuthProps) => {
   const [user, setUser] = useState('');
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
+  const isAvailableForViewing =
+    pathname === '/' || pathname === '/signup';
   const loginUser = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -46,12 +58,46 @@ export const AuthProvider = ({ children }: AuthProps) => {
       password: e.currentTarget.password.value,
     });
     if (res.success === 1) {
-      const response: Author = await getFetcher(
-        '/api/auth/get/'
+      getUser();
+      router.push('/chat');
+    }
+  };
+  const getUser = async () => {
+    const response: Author = await getFetcher(
+      '/api/auth/get/'
+    );
+    if (response.username !== null) {
+      setUser(response.username);
+    }
+  };
+  const getStatus = async () => {
+    try {
+      const response = await getFetcher<Status>(
+        '/api/auth/status/'
       );
-      if (response.username !== null) {
-        setUser(response.username);
+      if (response.status === 1) {
+        getUser();
+        router.push('/chat');
+      } else {
+        !isAvailableForViewing && (await router.push('/'));
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateToken = async () => {
+    const response: Refresh = await getFetcher(
+      '/api/auth/refresh-token/'
+    );
+    const refresh = response.refresh;
+    if (refresh !== null) {
+      await postFetcher('/api/auth/refresh/', {
+        refresh: refresh,
+      });
+    }
+    if (loading) {
+      setLoading(false);
     }
   };
   const values = {
@@ -59,7 +105,20 @@ export const AuthProvider = ({ children }: AuthProps) => {
     setUser,
     loginUser,
   };
-
+  useEffect(() => {
+    getStatus();
+  }, []);
+  useEffect(() => {
+    const fourMinutes = 1000 * 4 * 60;
+    const interval = setInterval(() => {
+      if (loading) {
+        updateToken();
+      }
+    }, fourMinutes);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [loading]);
   return (
     <AuthContext.Provider
       value={values as AuthContextProps}
