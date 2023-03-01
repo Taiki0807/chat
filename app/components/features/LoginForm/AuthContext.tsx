@@ -59,7 +59,6 @@ export const AuthProvider = ({ children }: AuthProps) => {
     });
     if (res.success === 1) {
       getUser();
-      router.push('/chat');
     }
   };
   const getUser = async () => {
