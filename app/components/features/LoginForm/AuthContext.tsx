@@ -45,6 +45,7 @@ export const useAuthContext = () => {
 export const AuthProvider = ({ children }: AuthProps) => {
   const [user, setUser] = useState('');
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const isAvailableForViewing =
@@ -74,6 +75,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       const response = await getFetcher<Status>(
         '/api/auth/status/'
       );
+      setStatus(response.status);
       if (response.status === 1) {
         getUser();
         router.push('/chat');
@@ -110,7 +112,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
   useEffect(() => {
     const fourMinutes = 1000 * 4 * 60;
     const interval = setInterval(() => {
-      if (loading) {
+      if (loading && status) {
         updateToken();
       }
     }, fourMinutes);
