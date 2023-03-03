@@ -79,8 +79,11 @@ export const AuthProvider = ({ children }: AuthProps) => {
       if (response.status === 1 && isAvailableForViewing) {
         getUser();
         router.push('/chat');
-      } else {
-        !isAvailableForViewing && (await router.push('/'));
+      } else if (
+        !isAvailableForViewing &&
+        response.status === 0
+      ) {
+        await router.push('/');
       }
     } catch (error) {
       console.error(error);
