@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
         '/api/auth/status/'
       );
       setStatus(response.status);
-      if (response.status === 1) {
+      if (response.status === 1 && isAvailableForViewing) {
         getUser();
         router.push('/chat');
       } else {
