@@ -15,17 +15,21 @@ import {
   postFetcher,
 } from '@/utils/httpClient';
 
-export interface AuthContextProps {
-  user: string | null;
-  setUser: Dispatch<SetStateAction<string | null>>;
-  loginUser: () => Promise<void>;
+interface Author {
+  id: number;
+  username: string;
+}
+interface AuthContextProps {
+  user: Author | undefined;
+  setUser: Dispatch<SetStateAction<Author | undefined>>;
+  /* eslint-disable no-unused-vars */
+  loginUser: (
+    e: React.FormEvent<HTMLFormElement>
+  ) => Promise<void>;
 }
 
-export interface AuthProps {
+interface AuthProps {
   children: ReactNode;
-}
-interface Author {
-  username: string;
 }
 interface Status {
   status: number;
@@ -43,7 +47,7 @@ export const useAuthContext = () => {
 };
 
 export const AuthProvider = ({ children }: AuthProps) => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState<Author | undefined>();
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(0);
   const router = useRouter();
@@ -67,7 +71,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       '/api/auth/get/'
     );
     if (response.username !== null) {
-      setUser(response.username);
+      setUser(response);
     }
   };
   const getStatus = async () => {
@@ -104,7 +108,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       setLoading(false);
     }
   };
-  const values = {
+  const values: AuthContextProps = {
     user,
     setUser,
     loginUser,
@@ -124,9 +128,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     };
   }, [loading]);
   return (
-    <AuthContext.Provider
-      value={values as AuthContextProps}
-    >
+    <AuthContext.Provider value={values}>
       {children}
     </AuthContext.Provider>
   );
