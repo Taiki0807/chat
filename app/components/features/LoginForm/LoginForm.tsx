@@ -18,7 +18,7 @@ export const LoginForm = (): JSX.Element => {
       {user && (
         <Toast
           outHideDuration={3000}
-          message={`${user}さん認証に成功しました。`}
+          message={`${user.username}さん認証に成功しました。`}
           onClose={handleClose}
         />
       )}
