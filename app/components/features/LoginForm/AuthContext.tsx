@@ -59,8 +59,8 @@ export const AuthProvider = ({ children }: AuthProps) => {
   ) => {
     e.preventDefault();
     const res = await postFetcher('/api/auth/login/', {
-      username: e.currentTarget.username.value,
-      password: e.currentTarget.password.value,
+      username: e.currentTarget.username?.value,
+      password: e.currentTarget.password?.value,
     });
     if (res.success === 1) {
       getUser();
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
   };
   const getStatus = async () => {
     try {
-      const response = await getFetcher<Status>(
+      const response: Status = await getFetcher(
         '/api/auth/status/'
       );
       setStatus(response.status);
