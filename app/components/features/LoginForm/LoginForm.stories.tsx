@@ -6,7 +6,9 @@ import {
   within,
   userEvent,
 } from '@storybook/testing-library';
+import { waitFor } from '@testing-library/react';
 import { LoginForm } from './LoginForm';
+import { handlers } from './handlers';
 import { AuthProvider } from '@/app/components/features/LoginForm/AuthContext';
 
 type T = typeof LoginForm;
@@ -31,16 +33,25 @@ export const EmptyForm: Story = {};
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
-    await userEvent.type(
-      canvas.getByTestId('username'),
-      'username'
-    );
-
-    await userEvent.type(
-      canvas.getByTestId('password'),
-      'a-random-password'
-    );
+    await waitFor(async () => {
+      await userEvent.type(
+        canvas.getByTestId('username'),
+        'username',
+        { delay: 10 }
+      );
+    });
+    await waitFor(async () => {
+      await userEvent.type(
+        canvas.getByTestId('password'),
+        'a-random-password',
+        { delay: 10 }
+      );
+    });
     await userEvent.click(canvas.getByRole('button'));
+  },
+  parameters: {
+    msw: {
+      handlers,
+    },
   },
 };
