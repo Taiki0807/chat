@@ -12,7 +12,7 @@ jest.mock('next/navigation', () => ({
 const { Default } = composeStories(stories);
 
 describe('LoginForm Test', () => {
-  test('render LoginForm with default args', async () => {
+  test('submit LoginForm with user input', async () => {
     const { container } = render(<Default />);
     await Default.play({ canvasElement: container });
   });
