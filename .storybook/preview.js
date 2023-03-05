@@ -1,12 +1,12 @@
-import * as nextRouter from 'next/navigation';
-// useRouterのモック化
-nextRouter.useRouter = () => ({
-  route: '',
-  pathname: '',
-  query: { query: '' },
-  asPath: '',
-  basePath: '',
-});
+import { addDecorator } from '@storybook/react';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
+
+addDecorator((Story) => (
+  <MemoryRouterProvider>
+    <Story />
+  </MemoryRouterProvider>
+));
+
 export const parameters = {
   nextjs: {
     appDirectory: true,
