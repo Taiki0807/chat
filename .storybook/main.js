@@ -24,6 +24,7 @@ module.exports = {
         alias: {
           ...config.resolve.alias,
           '@': path.resolve(__dirname, '../'),
+          'next/router': 'next-router-mock',
         },
       },
     };
