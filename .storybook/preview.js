@@ -1,5 +1,5 @@
 import { addDecorator } from '@storybook/react';
-import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider/next-12';
 import {
   initialize,
   mswDecorator,
