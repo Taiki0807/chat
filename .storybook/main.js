@@ -1,4 +1,3 @@
-var path = require('path');
 module.exports = {
   stories: [
     '../app/**/*.stories.mdx',
@@ -12,21 +11,11 @@ module.exports = {
   features: {
     interactionsDebugger: true,
   },
-  framework: '@storybook/react',
-  core: {
-    builder: '@storybook/builder-webpack5',
+  framework: {
+    name: '@storybook/nextjs',
+    options: {},
   },
-  webpackFinal: (config) => {
-    return {
-      ...config,
-      resolve: {
-        ...config.resolve,
-        alias: {
-          ...config.resolve.alias,
-          '@': path.resolve(__dirname, '../'),
-          'next/router': 'next-router-mock',
-        },
-      },
-    };
+  docs: {
+    autodocs: true,
   },
 };
