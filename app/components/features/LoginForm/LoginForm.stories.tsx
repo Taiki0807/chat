@@ -1,7 +1,4 @@
-import {
-  type ComponentMeta,
-  type ComponentStoryObj,
-} from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   within,
   userEvent,
@@ -11,11 +8,7 @@ import { LoginForm } from './LoginForm';
 import { handlers } from './handlers';
 import { AuthProvider } from '@/app/components/features/LoginForm/AuthContext';
 
-type T = typeof LoginForm;
-type Meta = ComponentMeta<T>;
-type Story = ComponentStoryObj<T>;
-
-export default {
+const meta = {
   title: 'LoginForm',
   component: LoginForm,
   decorators: [
@@ -27,7 +20,11 @@ export default {
       );
     },
   ],
-} as Meta;
+} satisfies Meta<typeof LoginForm>;
+
+export default meta;
+type T = typeof LoginForm;
+type Story = StoryObj<T>;
 
 export const EmptyForm: Story = {};
 export const Default: Story = {
