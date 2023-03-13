@@ -14,6 +14,9 @@ const { Default } = composeStories(stories);
 describe('LoginForm Test', () => {
   test('submit LoginForm with user input', async () => {
     const { container } = render(<Default />);
+    //https://github.com/storybookjs/storybook/pull/21517
+    //To access the remaining props, @ts-ignore needs to be placed.
+    //@ts-ignore
     await Default.play({ canvasElement: container });
   });
 });
