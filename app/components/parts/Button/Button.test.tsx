@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/testing-react';
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import * as stories from './Button.stories';
 import '@testing-library/jest-dom';

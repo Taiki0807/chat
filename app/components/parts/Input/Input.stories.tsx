@@ -1,14 +1,7 @@
-import {
-  type ComponentMeta,
-  type ComponentStoryObj,
-} from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
 
-type T = typeof Input;
-type Meta = ComponentMeta<T>;
-type Story = ComponentStoryObj<T>;
-
-export default {
+const meta = {
   title: 'Input',
   component: Input,
   decorators: [
@@ -18,7 +11,11 @@ export default {
       </div>
     ),
   ],
-} as Meta;
+} satisfies Meta<typeof Input>;
+
+export default meta;
+type T = typeof Input;
+type Story = StoryObj<T>;
 
 export const Default: Story = {
   args: {
