@@ -2,20 +2,17 @@
 to: <%= path %>/<%= name %>.stories.tsx
 unless_exists: true
 ---
-import {
-  type ComponentMeta,
-  type ComponentStoryObj,
-} from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { <%= name %> } from './<%= name %>';
 
-type T = typeof <%= name %>;
-type Meta = ComponentMeta<T>;
-type Story = ComponentStoryObj<T>;
-
-export default {
+const meta = {
   title: '<%= name %>',
   component: <%= name %>,
-} as Meta;
+} satisfies Meta<typeof <%= name %>>;
+
+export default meta;
+type T = typeof <%= name %>;
+type Story = StoryObj<T>;
 
 export const Default: Story = {
   <% if (have_props) { -%>

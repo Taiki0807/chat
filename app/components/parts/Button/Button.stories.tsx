@@ -1,17 +1,21 @@
-import {
-  type ComponentMeta,
-  type ComponentStoryObj,
-} from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
-type T = typeof Button;
-type Meta = ComponentMeta<T>;
-type Story = ComponentStoryObj<T>;
-
-export default {
+const meta = {
   title: 'Button',
   component: Button,
-} as Meta;
+  decorators: [
+    (Story) => (
+      <div style={{ width: '300px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Meta<typeof Button>;
+
+export default meta;
+type T = typeof Button;
+type Story = StoryObj<T>;
 
 export const Default: Story = {
   args: {
@@ -23,5 +27,11 @@ export const Primary: Story = {
   args: {
     color: 'primary',
     children: 'Primary',
+  },
+};
+export const Blue: Story = {
+  args: {
+    color: 'blue',
+    children: 'Blue',
   },
 };

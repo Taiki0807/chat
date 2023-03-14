@@ -7,5 +7,5 @@ const buildEslintCommand = (filenames) =>
 
 module.exports = {
   '**/*.(ts|tsx)': () => 'tsc -p tsconfig.json --noEmit',
-  '*.{js,jsx,ts,tsx}': [buildEslintCommand],
+  '**/app/**/*.(js|ts|tsx|json)': [buildEslintCommand],
 };
