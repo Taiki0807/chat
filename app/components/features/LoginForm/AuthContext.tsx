@@ -115,6 +115,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
   };
   useEffect(() => {
     getStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     const fourMinutes = 1000 * 4 * 60;
@@ -126,6 +127,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     return () => {
       clearInterval(interval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
   return (
     <AuthContext.Provider value={values}>

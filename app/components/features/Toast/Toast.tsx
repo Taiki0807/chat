@@ -22,6 +22,7 @@ export const Toast = (props: Props): JSX.Element => {
     return () => {
       clearTimeout(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleClose = () => {
     setVisible(false);
