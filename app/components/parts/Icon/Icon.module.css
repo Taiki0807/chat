@@ -1,0 +1,18 @@
+.icon__container {
+  position: relative;
+  display: inline-block;
+}
+.icon {
+  border-radius: 50%;
+  border: #eee 3px solid;
+}
+.mark {
+  position: absolute;
+  background-color: #1eff00;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: #fff 3px solid;
+  bottom: 5px;
+  right: 2px;
+}
