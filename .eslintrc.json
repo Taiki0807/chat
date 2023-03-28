@@ -49,6 +49,7 @@
   },
   "globals": {
     "JSX": "readonly",
-    "React": "writable"
+    "React": "writable",
+    "NodeJS": true
   }
 }
