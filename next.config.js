@@ -6,6 +6,10 @@ const nextConfig = {
   eslint: {
     dirs: ['app'],
   },
+  reactStrictMode: true,
+  images: {
+    domains: ['picsum.photos'],
+  },
 };
 
 module.exports = nextConfig;
