@@ -80,32 +80,34 @@ export const AuthProvider = ({ children }: AuthProps) => {
         '/api/auth/status/'
       );
       setStatus(response.status);
-      if (response.status === 1 && isAvailableForViewing) {
+      if (response.status === 1) {
         getUser();
+      }
+      if (response.status === 1 && isAvailableForViewing) {
         router.push('/chat');
-      } else if (
-        !isAvailableForViewing &&
-        response.status === 0
-      ) {
-        await router.push('/');
       }
     } catch (error) {
-      console.error(error);
+      updateToken();
     }
   };
 
   const updateToken = async () => {
-    const response: Refresh = await getFetcher(
-      '/api/auth/refresh-token/'
-    );
-    const refresh = response.refresh;
-    if (refresh !== null) {
-      await postFetcher('/api/auth/refresh/', {
-        refresh: refresh,
-      });
-    }
-    if (loading) {
-      setLoading(false);
+    try {
+      const response: Refresh = await getFetcher(
+        '/api/auth/refresh-token/'
+      );
+      const refresh = response.refresh;
+      if (refresh !== null) {
+        await postFetcher('/api/auth/refresh/', {
+          refresh: refresh,
+        });
+      }
+      getStatus();
+      if (loading) {
+        setLoading(false);
+      }
+    } catch (error) {
+      await router.push('/');
     }
   };
   const values: AuthContextProps = {
@@ -120,7 +122,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
   useEffect(() => {
     const fourMinutes = 1000 * 4 * 60;
     const interval = setInterval(() => {
-      if (loading && status) {
+      if (loading) {
         updateToken();
       }
     }, fourMinutes);
