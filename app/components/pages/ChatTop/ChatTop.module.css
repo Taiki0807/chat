@@ -1,0 +1,12 @@
+.chattop {
+  display: flex;
+  height: 100vh;
+}
+.chat__side {
+  flex: 0.25;
+  background-color: blue;
+  color: white;
+}
+.chat__main {
+  flex: 0.75;
+}
