@@ -1,12 +1,32 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, Dispatch, useEffect } from 'react';
+import { MdPeopleAlt } from 'react-icons/md';
+import {
+  ChatInput,
+  ChatLoading,
+  Icon,
+  Message,
+  Popover,
+} from '../../parts';
+import { useChatMember } from '../ChatList/ChanelListContext';
 import style from './Chat.module.css';
+import {
+  getChatMessageClassName,
+  formatDate,
+} from './chatUtils';
+import { ChatHeader } from './components';
+import { useChatMessage } from './useChatMessage';
+import { useChatWebSocket } from './useWebSocket';
 import { useAuthContext } from '@/app/components/features/LoginForm/AuthContext';
-import { getFetcher } from '@/utils/httpClient';
 
 interface Props {
   id: string;
+  onlineUserList: string[];
+  setOnlineUserList: Dispatch<
+    React.SetStateAction<never[]>
+  >;
 }
+
 interface ChatMessage {
   userName: string;
   userImage: string | null;
@@ -14,168 +34,150 @@ interface ChatMessage {
   timestamp: string;
   user: number;
 }
-
 type ChatMessageList = {
   count: number;
   next: string | null;
   previous: string | null;
+  chatRoomName: string;
   results: ChatMessage[];
 };
 
 export const Chat = (props: Props): JSX.Element => {
   const [inputMessage, setInputMessage] = useState('');
+  const [anchorEl, setAnchorEl] =
+    useState<HTMLButtonElement | null>(null);
+  const [open, setOpen] = useState(false);
+  const { user } = useAuthContext();
   const [messages, setMessages] = useState<ChatMessageList>(
     {
       count: 0,
       next: null,
       previous: null,
+      chatRoomName: '',
       results: [],
     }
   );
-  const [typing, setTyping] = useState(false);
-  const { user } = useAuthContext();
-  let typingTimer: NodeJS.Timeout;
-  let isTypingSignalSent = false;
-  const socketRef = useRef<WebSocket>();
-  const [userID, setUserID] = useState<number | undefined>(
-    0
-  );
-  const SocketActions = {
-    MESSAGE: 'message',
-    TYPING: 'typing',
-    ONLINE_USER: 'onlineUser',
+  const { chatMember } = useChatMember();
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setOpen(!open);
+    setAnchorEl(event.currentTarget);
   };
 
-  const fetchChatMessage = async () => {
-    if (props.id) {
-      const url =
-        `/api/v1/chats/${props.id}/messages` +
-        '?limit=20&offset=0';
-      const chatMessages: ChatMessageList =
-        await getFetcher(url);
-      setMessages(chatMessages);
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputMessage(e.target.value);
   };
-  useEffect(() => {
-    fetchChatMessage();
-    setUserID(user?.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
-  useEffect(() => {
-    if (!userID) {
-      return;
-    }
-
-    const websocket = new WebSocket(
-      `ws://localhost:8000/ws/users/${userID}/chat/`
-    );
-    socketRef.current = websocket;
-  }, [userID]);
-  if (socketRef.current) {
-    socketRef.current.onmessage = (event: any) => {
-      const data = JSON.parse(event.data);
-      const chatId = props.id;
-      const userId = user?.id;
-      if (chatId === data.roomId) {
-        if (data.action === SocketActions.MESSAGE) {
-          setMessages((prevState) => {
-            let messagesState = JSON.parse(
-              JSON.stringify(prevState)
-            );
-            messagesState.results.unshift(data);
-            return messagesState;
-          });
-          setTyping(false);
-        } else if (
-          data.action === SocketActions.TYPING &&
-          data.user !== userId
-        ) {
-          setTyping(data.typing);
-        }
-      }
-      if (data.action === SocketActions.ONLINE_USER) {
-        //setOnlineUserList(data.userList);
-      }
-    };
-  }
-  const messageSubmitHandler = (event: any) => {
+  const handleSubmit = (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
-    if (inputMessage && socketRef.current) {
-      socketRef.current.send(
-        JSON.stringify({
-          action: SocketActions.MESSAGE,
-          message: inputMessage,
-          user: user?.id,
-          roomId: props.id,
-        })
-      );
-    }
+    sendMessage(inputMessage);
     setInputMessage('');
   };
-  const sendTypingSignal = (typing: any) => {
-    if (socketRef.current) {
-      socketRef.current.send(
-        JSON.stringify({
-          action: SocketActions.TYPING,
-          typing: typing,
-          user: user?.id,
-          roomId: props.id,
-        })
-      );
-    }
-  };
 
-  const chatMessageTypingHandler = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    const inputValue = event.currentTarget.value;
-    if (inputValue !== '') {
-      if (!isTypingSignalSent) {
-        sendTypingSignal(true);
-        isTypingSignalSent = true;
-      }
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => {
-        sendTypingSignal(false);
-        isTypingSignalSent = false;
-      }, 3000);
-    } else {
-      clearTimeout(typingTimer);
-      isTypingSignalSent = false;
+  const {
+    isTyping,
+    sendMessage,
+    chatMessageTypingHandler,
+  } = useChatWebSocket({
+    userID: user?.id,
+    chatID: props.id,
+    setOnlineUserList: props.setOnlineUserList,
+    setMessages: setMessages,
+  });
+  const { Data } = useChatMessage(props.id);
+  useEffect(() => {
+    if (Data) {
+      setMessages(Data);
     }
-  };
+  }, [Data]);
+  if (!Data) return <div>Loading...</div>;
 
   return (
     <div className={style.chat}>
-      <div className={style.chat__header}>
-        <h1>Chat Test User Id:{user?.id}</h1>
-        <pre>{props.id}</pre>
-      </div>
+      <ChatHeader chatName={Data.chatRoomName}>
+        <div className={style.popover__wrapper}>
+          <button
+            className={style.button}
+            onClick={handleClick}
+          >
+            <MdPeopleAlt size={30} />
+          </button>
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+          >
+            <h4>Chat Member</h4>
+            {chatMember.map((data: any) => {
+              if (data.roomId === props.id) {
+                return (
+                  <div key={data.roomId}>
+                    {data.member.map((member: any) => (
+                      <div
+                        key={member.id}
+                        className={style.userlist}
+                      >
+                        <Icon
+                          img="https://picsum.photos/seed/picsum/200/300"
+                          alt="icon"
+                          height={40}
+                          width={40}
+                          online={props.onlineUserList.some(
+                            (id) => id === member.id
+                          )}
+                        ></Icon>
+                        <h4 className={style.name}>
+                          {member.username}
+                        </h4>
+                      </div>
+                    ))}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </Popover>
+        </div>
+      </ChatHeader>
       <div className={style.chat__messages}>
-        {messages.results.map((message, index) => (
-          <div key={index} className={style.chat__message}>
-            {message.message}
-          </div>
-        ))}
-        <p>{typing ? 'Typing...' : ''}</p>
+        {isTyping ? <ChatLoading /> : ''}
+        {messages.results.map(
+          (message: any, index: number) => (
+            <div key={index}>
+              <Message
+                img={
+                  message.userImage
+                    ? message.userImage
+                    : 'https://picsum.photos/seed/picsum/200/300'
+                }
+                message={message.message}
+                name={message.userName}
+                styles={getChatMessageClassName(
+                  user?.id,
+                  message.user
+                )}
+                timestamp={formatDate(message.timestamp)}
+              />
+            </div>
+          )
+        )}
       </div>
-      <div className={style.chat__input}>
-        <form onSubmit={messageSubmitHandler}>
-          <input
-            onChange={(event) =>
-              setInputMessage(event.target.value)
-            }
-            onKeyUp={chatMessageTypingHandler}
-            value={inputMessage}
-            id="chat-message-input"
-            type="text"
-            className="form-control"
-            placeholder="Type your message"
-            autoComplete="off"
-          ></input>
-          <button>Send</button>
-        </form>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <ChatInput
+          text={'Send a message...'}
+          onChange={handleChange}
+          value={inputMessage}
+          onKeyUp={(e) => chatMessageTypingHandler(e)}
+        />
+      </form>
     </div>
   );
 };
