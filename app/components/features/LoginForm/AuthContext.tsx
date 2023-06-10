@@ -85,8 +85,6 @@ export const AuthProvider = ({ children }: AuthProps) => {
       }
       if (response.status === 1 && isAvailableForViewing) {
         router.push('/chat');
-      } else if (response.status === 0) {
-        router.push('/');
       }
     } catch (error) {
       updateToken();
