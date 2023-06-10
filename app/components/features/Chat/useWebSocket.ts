@@ -56,7 +56,7 @@ export const useChatWebSocket = ({
     }
 
     const websocket = new WebSocket(
-      `ws://chat-api-taiki0807.fly.dev/ws/users/${userID}/chat/`
+      `wss://chat-api-taiki0807.fly.dev/ws/users/${userID}/chat/`
     );
     socketRef.current = websocket;
   }, [userID]);
