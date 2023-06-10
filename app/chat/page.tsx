@@ -1,7 +1,11 @@
-import React from 'react';
+import { ChatTop } from '../components/pages/ChatTop';
 
 const page = () => {
-  return <div>page</div>;
+  return (
+    <div>
+      <ChatTop />
+    </div>
+  );
 };
 
 export default page;
