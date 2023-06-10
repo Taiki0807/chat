@@ -1,4 +1,5 @@
 import './globals.css';
+import { ChatMemberProvider } from './components/features/ChatList/ChanelListContext';
 import { AuthProvider } from '@/app/components/features/LoginForm/AuthContext';
 
 export default function RootLayout({
@@ -14,7 +15,11 @@ export default function RootLayout({
       */}
       <head />
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <ChatMemberProvider>
+            {children}
+          </ChatMemberProvider>
+        </AuthProvider>
       </body>
     </html>
   );
