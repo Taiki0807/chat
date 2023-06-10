@@ -20,3 +20,12 @@
   background: #2691d2;
   color: #e9f4fb;
 }
+
+.button-purple {
+  background-color: rgb(88, 101, 242);
+  color: #fff;
+  transition: background-color 0.17s ease, color 0.17s ease;
+}
+.button-purple:hover {
+  background-color: rgb(71, 82, 196);
+}
