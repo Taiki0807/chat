@@ -1,3 +1,9 @@
 export { Button } from './Button';
 export { Input } from './Input';
-export {Icon} from './Icon';
+export { Icon } from './Icon';
+export { ChatInput } from './ChatInput';
+export { Message } from './Message';
+export { ChatLoading } from './ChatLoading';
+export { Popover } from './Popover';
+export { Modal } from './Modal';
+export { RadioButton } from './RadioButton';
