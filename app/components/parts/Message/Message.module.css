@@ -1,0 +1,42 @@
+.message {
+  display: flex;
+  align-items: center;
+  margin: 6px 0 0 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8em;
+  color: #515151;
+}
+.message__right {
+  flex-direction: row-reverse;
+  margin: 6px 20px 0 0;
+}
+.icon__none {
+  display: none;
+}
+.chat__text {
+  margin: 0 15px;
+  background-color: #f6f6f6;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+.text-only {
+  margin-left: 45px;
+}
+.message_item {
+  position: relative;
+}
+.chat__time {
+  font-size: 10px;
+  color: lightgrey;
+  position: absolute;
+}
+.time__left {
+  bottom: -15px;
+  left: 20px;
+}
+.time__right {
+  bottom: -15px;
+  right: 20px;
+}
