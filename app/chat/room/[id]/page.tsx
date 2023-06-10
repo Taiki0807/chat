@@ -1,4 +1,4 @@
-import { ChatTop } from '@/app/components/pages';
+import { ChatDetail } from '@/app/components/pages';
 
 interface Props {
   params: { id: string };
@@ -6,7 +6,7 @@ interface Props {
 const page = (props: Props): JSX.Element => {
   return (
     <div>
-      <ChatTop id={props.params.id} />
+      <ChatDetail id={props.params.id} />
     </div>
   );
 };
